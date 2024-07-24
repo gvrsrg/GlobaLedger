@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 
+const { router } = require('./routes/userRouter.js')
 
 const app = express()
 
@@ -18,4 +19,5 @@ app.listen(PORT, () => {
     console.log(`server on port ${PORT}`);
 })
 
+app.use('/api/users',router)
 
