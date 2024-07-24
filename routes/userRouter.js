@@ -1,16 +1,16 @@
 
-const { getUsers, createUser, getUserByEmail, getUserById, getAllUsers } = require('../controllers/userController.js')
+const { createUser, getUserByEmail, getUserById, getAllUsers } = require('../controllers/userController.js')
 
 
 const express = require('express')
 
-const router = express.Router()
+const userRouter = express.Router()
 
-router.get('/byemail/:email', getUserByEmail);
-router.get('/byid/:id', getUserById);
-router.post('/', createUser);
-router.get('/', getAllUsers);
+userRouter.get('/byemail/:email', getUserByEmail);
+userRouter.get('/byid/:id', getUserById);
+userRouter.post('/', createUser);
+userRouter.get('/', getAllUsers);
 
 module.exports = {
-    router
+    userRouter
 };
