@@ -1,7 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 
-const { router } = require('./routes/userRouter.js')
+const { userRouter } = require('./routes/userRouter.js')
+const { accountRouter } = require('./routes/accountRouter.js')
 
 const app = express()
 
@@ -19,5 +20,5 @@ app.listen(PORT, () => {
     console.log(`server on port ${PORT}`);
 })
 
-app.use('/api/users',router)
-
+app.use('/api/users',userRouter)
+app.use('/api/accounts',accountRouter)
