@@ -24,7 +24,11 @@ const getAllAccounts = async (req, res) => {
 
 const getAllUserAccounts = async (req, res) => {
     try {
-        const { userid, email } = req.params
+        let { userid, email } = req.params
+        console.log(req.params);
+
+        userid = userid || '00000000-0000-0000-0000-000000000000'
+        //email = email || ''
 
         const userInfo = { userid, email }
 

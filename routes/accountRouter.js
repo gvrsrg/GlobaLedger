@@ -7,7 +7,8 @@ const accountRouter = express.Router()
 
 
 accountRouter.get('/byid/:id', getAccountById);
-accountRouter.get('/byuserid/:id', getAllUserAccounts);
+accountRouter.get('/byuserid/:userid', getAllUserAccounts);
+accountRouter.get('/byemail/:email', getAllUserAccounts);
 accountRouter.post('/', createAccount);
 accountRouter.get('/', getAllAccounts);
 
