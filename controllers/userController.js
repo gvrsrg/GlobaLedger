@@ -1,10 +1,11 @@
 const { _createUser, _getAllUsers, _getUserByEmail, _getUserById } = require('../models/userModel.js')
 
 const createUser = async (req, res) => {
-    const { email, firstname, lastname } = req.body
-    const userInfo = { email, firstname, lastname }
+    const { email, password, firstname, lastname } = req.body
+    const userInfo = { email, password, firstname, lastname }
     try {
         const newUser = await _createUser(userInfo)
+        req.session.user = newUser;
         res.json(newUser)
     } catch (error) {
         console.log(error);

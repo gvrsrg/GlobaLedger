@@ -1,19 +1,19 @@
 const { db } = require('../config/db.js')
 
 const _createUser = async (userInfo) => {
-    const {email, firstname, lastname,} = userInfo
+    const {email, password, firstname, lastname} = userInfo
     const trx = await db.transaction()
     try {
-        const [newUser] = await db('users')
+        const [newUser] = await trx('users')
         .insert([
-            {email, firstname, lastname}
-        ], ['userid', 'email']
-        );
-        // await trx.commit()
+            {email, password, firstname, lastname}
+        ], ['userid', 'email', 'password', 'firstname', 'lastname']);
+        
+        await trx.commit()
         return newUser
 
     } catch (error) {
-        // await trx.rollback()
+        await trx.rollback()
         throw error
     }
 }
@@ -46,12 +46,10 @@ const _getUserByEmail = async (email) =>{
     try {
         console.log(email);
         const user = await db('users')
-        .select("userid","firstname", "lastname", "email")
+        .select("userid","firstname", "lastname", "email", "password")
         .where("email", email)
-        //.select("email","firstname", "lastname")
-        //.first()
         console.log(user);
-        return user
+        return user[0]
     } catch (error) {
         console.log(error);
         throw error
