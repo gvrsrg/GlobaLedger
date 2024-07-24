@@ -1,0 +1,13 @@
+@import 'header.css';
+@import 'signup.css';
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0%;
+    padding: 0%;
+    background-color: black;
+    color: #E0CB76;
+    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+}
