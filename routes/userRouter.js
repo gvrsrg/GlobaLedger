@@ -7,7 +7,7 @@ const express = require('express')
 const userRouter = express.Router()
 
 userRouter.get('/byemail/:email', getUserByEmail);
-userRouter.get('/byid/:id', getUserById);
+userRouter.get('/byid/:userid', getUserById);
 userRouter.post('/', createUser);
 userRouter.get('/', getAllUsers);
 
