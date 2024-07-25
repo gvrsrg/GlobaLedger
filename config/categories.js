@@ -105,7 +105,10 @@ const categories =
     }
   }
   
-  const expences = Object.keys(categories.expences)
-  const income = categories.income
+// console.log(categories.categories.expenses);
+// console.log(categories.categories.income);
 
-  module.exports = { expences_cat, income_cat }
+const expenses_cat = Object.keys(categories.categories.expenses)
+const income_cat = categories.categories.income
+
+  module.exports = { expenses_cat, income_cat }

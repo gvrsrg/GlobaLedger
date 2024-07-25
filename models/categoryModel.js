@@ -20,6 +20,37 @@ const _createCategory = async (categoryInfo) => {
     }
 }
 
+const _updateCategory = async (categoryInfo) => {
+    let { currency, name, budgetamount, userid, email } = categoryInfo
+    try {
+        if (!userid){
+            const user = await _getUserByEmail(email)
+            userid = user.userid
+        }
+
+        let category = await db('categories')
+        .select('categoryid' ,'currency', 'name', 'userid')
+        .where({ 'currency':currency, 'name':name, 'userid':userid })
+        .first();
+        
+        if (!category > 0){
+            return _createCategory(categoryInfo)
+        } else {
+            const categoryId = category.categoryid
+            category = await db('categories')
+            .update('budgetamount', budgetamount)
+            .where('categoryid', categoryId);
+            return category
+        }
+
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+
 const _getAllCategories = async () =>{
     console.log("get all user categories");
     try {
@@ -72,6 +103,7 @@ module.exports = {
     _createCategory,
     _getAllCategories,
     _getAllUserCategories,
-    _getCategoryById
+    _getCategoryById,
+    _updateCategory
 
 }
