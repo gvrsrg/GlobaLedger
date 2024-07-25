@@ -2,12 +2,14 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors')
 const bcrypt = require('bcrypt');
-
+const { currencies } = require('./config/currencies.js')
 const { userRouter } = require('./routes/userRouter.js')
 const { accountRouter } = require('./routes/accountRouter.js');
 const { categoryRouter } = require('./routes/categoryRouter.js');
 
 const { _createUser, _getUserByEmail } = require('./models/userModel.js');
+const { _getAllUserCategories } = require('./models/categoryModel.js');
+const { _getAllUserAccounts } = require('./models/accountModel.js');
 
 const app = express()
 const secret = process.env.SESSION_SECRET;
@@ -31,6 +33,16 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     let user = req.session.user;
     res.render('index', {loggedIn: !!user, user})
+});
+
+app.get('/settings', async (req, res) => {
+    let user = req.session.user;
+    console.log('user: ', user)
+    if(user){
+        const userAccounts = await  _getAllUserAccounts({userid: user.userid, email: user.email});
+        const userCategories = await _getAllUserCategories({userid: user.userid, email: user.email});
+        res.render('settings', {loggedIn: !!user, user, accounts: userAccounts, categories: userCategories, incomes: [], recurringExpenses: [], currencies});
+    } else res.redirect('/');
 })
 
 app.use(cors())

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>GlobaLedger - Settings</title>
+</head>
+<body>
+    <%- include('partials/header', {loggedIn: locals.loggedIn, user: locals.user}) %>
+    <div id="settings-page">
+        <h1>Settings</h1>
+        <section id="profile-section">
+            <h2>Profile</h2>
+            <form action="">
+                <div class="form-inputs">
+                    <div>
+                        <label for="firstname">First Name:</label> <br>
+                        <input type="text" id="firstname" name="firstname" value="<%= locals.user.firstname %>" placeholder="<%= locals.user.firstname %>" required>
+                    </div>
+                    <div>
+                        <label for="lastname">Last Name:</label> <br>
+                        <input type="text" id="lastname" name="lastname" value="<%= locals.user.lastname %>" placeholder="<%= locals.user.lastname %>" required>
+                    </div>
+                </div>
+                <button type="submit" class="button-outline">Update</button>
+            </form>
+        </section>
+        <section id="accounts-section">
+            <h2>Accounts</h2>
+            <% for(const account of locals.accounts){%>
+                <h3><%= account.name %></h3>
+                <form class="subsection-form" action="">
+                    <div class="form-inputs">
+
+                        <div>
+                            <label for="name">Name:</label> <br>
+                            <input type="text" id="name" name="name" value="<%= account.name %>" placeholder="<%= account.name %>" required>
+                        </div>
+                        <div>
+                            <label for="currency">Currency:</label> <br>
+                            <select name="currency" id="currency">
+                                <% for(currency of locals.currencies) { %>
+                                    <option value="<%= currency.code %>" <%= account.currency === currency.code ? 'selected' : '' %>><%= currency.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="balance">Balance:</label> <br>
+                            <input type="number" step="0.01" id="balance" name="balance" value="<%= account.balance %>" placeholder="<%= account.balance %>" required>
+                        </div>
+                    </div>
+                    <button class="button-outline" type="submit">Update</button>
+                </form>
+            <% } %>
+            <form id="create-account-form"  action="http://localhost:3000/api/accounts/" method="post">
+                <h3>ADD ACCOUNT:</h3>
+                <div class="form-inputs">
+                    <div>
+                        <label for="name">Name:</label> <br>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="currency">Currency:</label> <br>
+                        <select name="currency" id="currency">
+                            <% for(currency of locals.currencies) { %>
+                                <option value="<%= currency.code %>"><%= currency.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="balance">Balance:</label> <br>
+                        <input type="number" step="0.01" id="balance" name="balance" required>
+                    </div>
+                    <input style="display: none;" type="text" name="email", id="email" value="<%= locals.user.email%>">
+                    <input style="display: none;" type="text" name="userid", id="userid" value="<%= locals.user.userid%>">
+                </div>
+                <div>
+                    <button class="button-fill add-form-btn" type="submit">Create Account</button> <button id="cancel-create-account" class="button-outline add-form-btn">Cancel</button>
+                </div>
+            </form>
+            <button class="button-fill" id="showAddAccountBtn">+ Add Account</button>
+        </section>
+        <section id="categories-section">
+            <h2>Categories</h2>
+            <% for(const category of locals.categories){%>
+                <h3><%= category.name %></h3>
+                <form class="subsection-form" action="http://localhost:3000/api/cat/update" method="post">
+                    <div class="form-inputs">
+                        <div>
+                            <label for="name">Name:</label> <br>
+                            <input type="text" id="name" name="name" value="<%= category.name %>" placeholder="<%= category.name %>" required>
+                        </div>
+                        <div>
+                            <label for="currency">Currency:</label> <br>
+                            <select name="currency" id="currency">
+                                <% for(currency of locals.currencies) { %>
+                                    <option value="<%= currency.code %>" <%= category.currency === currency.code ? 'selected' : '' %>><%= currency.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="budgetamount">Budget Amount:</label> <br>
+                            <input type="number" step="0.01" id="budgetamount" name="budgetamount" value="<%= category.budgetamount %>" placeholder="<%= category.budgetamount %>" required>
+                        </div>
+                    </div>
+                    <input style="display: none;" type="text" name="email", id="email" value="<%= locals.user.email%>">
+                    <input style="display: none;" type="text" name="userid", id="userid" value="<%= locals.user.userid%>">
+                    <input style="display: none;" type="text" name="categoryid", id="categoryid" value="<%= category.categoryid%>">
+                    <button class="button-outline" type="submit">Update</button>
+                </form>
+            <% } %>
+            <form id="create-category-form" action="http://localhost:3000/api/cat/" method="post">
+                <h3>ADD CATEGORY:</h3>
+                <div class="form-inputs">
+                    <div>
+                        <label for="name">Name:</label> <br>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="currency">Currency:</label> <br>
+                        <select name="currency" id="currency">
+                            <% for(currency of locals.currencies) { %>
+                                <option value="<%= currency.code %>"><%= currency  %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="budgetamount">Budget Amount:</label> <br>
+                        <input type="number" step="0.01" id="budgetamount" name="budgetamount" required>
+                    </div>
+                </div>
+                <input style="display: none;" type="text" name="email", id="email" value="<%= locals.user.email%>">
+                <input style="display: none;" type="text" name="userid", id="userid" value="<%= locals.user.userid%>">
+                <div>
+                    <button class="button-fill add-form-btn" type="submit">Create Category</button> <button id="cancel-create-category" class="button-outline add-form-btn">Cancel</button>
+                </div>
+            </form>
+            <button class="button-fill" id="showAddCategoryBtn">+ Add Category</button>
+        </section>
+        <section id="incomes-section">
+            <h2>Income Sources</h2>
+            <% for(const income of locals.incomes){%>
+                <h3><%= income.name %></h3>
+                <form class="subsection-form" action="">
+                    <div class="form-inputs">
+                        <div>
+                            <label for="name">Name:</label> <br>
+                            <input type="text" id="name" name="name" value="<%= income.name %>" placeholder="<%= income.name %>" required>
+                        </div>
+                        <div>
+                            <label for="currency">Currency:</label> <br>
+                            <select name="currency" id="currency">
+                                <% for(currency of locals.currencies) { %>
+                                    <option value="<%= currency.code %>" <%= income.currency === currency.code ? 'selected' : '' %>><%= currency.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="amount">Amount:</label> <br>
+                            <input type="number" step="0.01" id="amount" name="amount" value="<%= income.amount %>" placeholder="<%= income.amount %>" required>
+                        </div>
+                    </div>
+                    <button class="button-outline" type="submit">Update</button>
+                </form>
+            <% } %>
+            <form id="create-income-form" action="">
+                <h3>ADD INCOME SOURCE:</h3>
+                <div class="form-inputs">
+                    <div>
+                        <label for="name">Name:</label> <br>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="currency">Currency:</label> <br>
+                        <select name="currency" id="currency">
+                            <% for(currency of locals.currencies) { %>
+                                <option value="<%= currency.code %>"><%= currency.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="amount">Amount:</label> <br>
+                        <input type="number" step="0.01" id="amount" name="amount" required>
+                    </div>
+                    <div>
+                        <label for="account">Account:</label> <br>
+                        <select name="account" id="account">
+                            <% for(account of locals.accounts) { %>
+                                <option value="<%= account.accountid %>"><%= account.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button class="button-fill add-form-btn" type="submit">Create Income Source</button> <button id="cancel-create-income" class="button-outline add-form-btn">Cancel</button>
+                </div>
+            </form>
+            <button class="button-fill" id="showAddIncomeBtn">+ Add Income Source</button>
+        </section>
+        <section id="recurring-expenses-section">
+            <h2>Recurring Expenses</h2>
+            <% for(const expense of locals.recurringExpenses){%>
+                <h3><%= expense.name %></h3>
+                <form class="subsection-form" action="">
+                    <div class="form-inputs">
+                        <div>
+                            <label for="name">Name:</label> <br>
+                            <input type="text" id="name" name="name" value="<%= expense.name %>" placeholder="<%= expense.name %>" required>
+                        </div>
+                        <div>
+                            <label for="currency">Currency:</label> <br>
+                            <select name="currency" id="currency">
+                                <% for(currency of locals.currencies) { %>
+                                    <option value="<%= currency.code %>" <%= expense.currency === currency.code ? 'selected' : '' %>><%= currency.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="amount">Amount:</label> <br>
+                            <input type="number" step="0.01" id="amount" name="amount" value="<%= expense.amount %>" placeholder="<%= expense.amount %>" required>
+                        </div>
+                        <div>
+                            <label for="account">Account:</label> <br>
+                            <select name="account" id="account">
+                                <% for(account of locals.accounts) { %>
+                                    <option value="<%= account.accountid %>"><%= account.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="button-outline" type="submit">Update</button>
+                </form>
+            <% } %>
+            <form id="create-expense-form" action="">
+                <h3>ADD RECURRING EXPENSE:</h3>
+                <div class="form-inputs">
+                    <div>
+                        <label for="name">Name:</label> <br>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="currency">Currency:</label> <br>
+                        <select name="currency" id="currency">
+                            <% for(currency of locals.currencies) { %>
+                                <option value="<%= currency.code %>"><%= currency.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="amount">Amount:</label> <br>
+                        <input type="number" step="0.01" id="amount" name="amount" required>
+                    </div>
+                    <div>
+                        <label for="account">Account:</label> <br>
+                        <select name="account" id="account">
+                            <% for(account of locals.accounts) { %>
+                                <option value="<%= account.accountid %>"><%= account.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button class="button-fill add-form-btn" type="submit">Create Recurring Expense</button> <button id="cancel-create-expense" class="button-outline add-form-btn">Cancel</button>
+                </div>
+            </form>
+            <button class="button-fill" id="showAddExpenseBtn">+ Add Recurring Expense</button>
+        </section>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        var locals = <%- JSON.stringify(locals) %>;
+        console.log('locals: ', locals)
+        // Accounts
+        const addAccountForm = document.getElementById('create-account-form');
+        const showAddAccountBtn = document.getElementById('showAddAccountBtn');
+        showAddAccountBtn.addEventListener('click', () => showAddAccount())
+        function showAddAccount() {
+            addAccountForm.style.display = 'block';
+            showAddAccountBtn.style.display = 'none';
+        }
+        function hideAddAccount() {
+            addAccountForm.reset();
+            addAccountForm.style.display = 'none';
+            showAddAccountBtn.style.display = 'block';
+        }
+
+        document.getElementById('cancel-create-account').addEventListener('click', () => hideAddAccount())
+        // Categories
+        const addCategoryForm = document.getElementById('create-category-form');
+        const showAddCategoryBtn = document.getElementById('showAddCategoryBtn');
+        showAddCategoryBtn.addEventListener('click', () => showAddCategory())
+        function showAddCategory() {
+            addCategoryForm.style.display = 'block';
+            showAddCategoryBtn.style.display = 'none';
+        }
+        function hideAddCategory() {
+            addCategoryForm.reset();
+            addCategoryForm.style.display = 'none';
+            showAddCategoryBtn.style.display = 'block';
+        }
+
+        document.getElementById('cancel-create-category').addEventListener('click', () => hideAddCategory())
+        //Incomes
+        const addIncomeForm = document.getElementById('create-income-form');
+        const showAddIncomeBtn = document.getElementById('showAddIncomeBtn');
+        showAddIncomeBtn.addEventListener('click', () => showAddIncome())
+        function showAddIncome() {
+            addIncomeForm.style.display = 'block';
+            showAddIncomeBtn.style.display = 'none';
+        }
+        function hideAddIncome() {
+            addIncomeForm.reset();
+            addIncomeForm.style.display = 'none';
+            showAddIncomeBtn.style.display = 'block';
+        }
+
+        document.getElementById('cancel-create-income').addEventListener('click', () => hideAddIncome())
+
+        //Recurring Expenses
+        const addExpenseForm = document.getElementById('create-expense-form');
+        const showAddExpenseBtn = document.getElementById('showAddExpenseBtn');
+        showAddExpenseBtn.addEventListener('click', () => showAddExpense())
+        function showAddExpense() {
+            addExpenseForm.style.display = 'block';
+            showAddExpenseBtn.style.display = 'none';
+        }
+        function hideAddExpense() {
+            addExpenseForm.reset();
+            addExpenseForm.style.display = 'none';
+            showAddExpenseBtn.style.display = 'block';
+        }
+
+        document.getElementById('cancel-create-expense').addEventListener('click', () => hideAddExpense())
+    </script>
+</body>
+</html>
