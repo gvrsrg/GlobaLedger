@@ -1,4 +1,5 @@
-const { _createCategory, _getAllCategories, _getAllUserCategories, _getCategoryById } = require('../models/categoryModel.js')
+const { _createCategory, _getAllCategories, _getAllUserCategories, _getCategoryById, _updateCategory } = require('../models/categoryModel.js')
+const { expenses_cat, income_cat } = require('../config/categories.js')
 
 const createCategory = async (req, res) => {
     const { currency, name, budgetamount, userid, email } = req.body
@@ -12,6 +13,17 @@ const createCategory = async (req, res) => {
     }
 }
 
+const updateCategory = async (req, res) => {
+    const { currency, name, budgetamount, userid, email } = req.body
+    const categoryInfo = { currency, name, budgetamount, userid, email } 
+    try {
+        const category = await _updateCategory(categoryInfo)
+        res.json(category)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"internal server error updating category"})
+    }
+}
 const getAllCategories = async (req, res) => {
     try {
         const categories = await _getAllCategories()
@@ -40,8 +52,6 @@ const getAllUserCategories = async (req, res) => {
     }
 }
 
-
-
 const getCategoryById = async (req, res) => {
     const { id } = req.params
     try {
@@ -57,5 +67,6 @@ module.exports = {
     createCategory,
     getAllCategories,
     getAllUserCategories,
-    getCategoryById
+    getCategoryById,
+    updateCategory
  }
