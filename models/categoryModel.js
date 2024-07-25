@@ -21,7 +21,8 @@ const _createCategory = async (categoryInfo) => {
 }
 
 const _updateCategory = async (categoryInfo) => {
-    let { currency, name, budgetamount, userid, email } = categoryInfo
+    console.log('updateCategory: ', categoryInfo)
+    let { currency, name, budgetamount, userid, email, categoryid } = categoryInfo
     try {
         if (!userid){
             const user = await _getUserByEmail(email)
@@ -30,7 +31,7 @@ const _updateCategory = async (categoryInfo) => {
 
         let category = await db('categories')
         .select('categoryid' ,'currency', 'name', 'userid')
-        .where({ 'currency':currency, 'name':name, 'userid':userid })
+        .where({ 'categoryid':categoryid })
         .first();
         
         if (!category > 0){
@@ -38,7 +39,11 @@ const _updateCategory = async (categoryInfo) => {
         } else {
             const categoryId = category.categoryid
             category = await db('categories')
-            .update('budgetamount', budgetamount)
+            .update({
+                budgetamount: budgetamount,
+                currency: currency,
+                name: name
+            })
             .where('categoryid', categoryId);
             return category
         }

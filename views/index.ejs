@@ -8,5 +8,23 @@
 </head>
 <body>
     <%- include('partials/header', {loggedIn: locals.loggedIn, user: locals.user}) %>
+    <% if(locals.user) {%>
+        
+
+    <% } else { %>
+        <div id="home-not-logged-in">
+
+            <h1>GlobaLedger</h1>
+            <h2>Track your finances across currencies.</h2>
+            <ul>
+                <li>Smart Categorization</li>
+                <li>Automatic currency conversion</li>
+                <li>Recurring expense scheduler</li>
+            </ul>
+            <a href="/signup"><button class="header-button" id="signupBtn">Sign Up</button></a>
+            <br>
+            <a href="/login"><button class="header-button" id="loginBtn">Login</button></a>
+        </div>
+    <% } %>
 </body>
 </html>

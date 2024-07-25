@@ -1,0 +1,69 @@
+#settings-page{
+    padding: 32px;
+    h1, h2 {
+        color: #E0CB76;
+    }
+    section {
+        border-bottom: 1px solid #E0CB76;
+        width: 70%;
+        padding-bottom: 20px;
+        form {
+            .form-inputs {
+                display: flex;
+                gap: 16px;
+                align-items:last baseline;
+                margin-bottom: 16px;
+                input, button, select {
+                    border-radius: 8px;
+                    padding: 5px;
+                    border: none;
+                    margin-top: 12px;
+                }
+                input {
+                    width: 200px;
+                }
+                select {
+                    width: 100px;
+                }
+                div {
+                    flex-direction: column;
+                }
+            }
+        }
+        .subsection-form {
+            border-bottom: 1px solid white;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            border-radius: 8px;
+            height: 32px;
+            width: 200px;
+            cursor: pointer;
+        }
+
+        .button-fill {
+            background-color: #E0CB76;
+            color: black;
+            border: none;
+        }
+        .button-outline {
+            background-color: black;
+            color: #E0CB76;
+            border: 2px solid #E0CB76;
+        }
+
+        .add-form-btn {
+            width: fit-content;
+        }
+
+        #create-account-form, #create-category-form, #create-income-form, #create-expense-form  {
+            display: none;
+        }
+
+        #cancel-create-account, #cancel-create-category, #cancel-create-income, #cancel-create-expense {
+            margin-left: 8px;
+        }
+    }
+}

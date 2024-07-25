@@ -11,7 +11,7 @@ categoryRouter.get('/byuserid/:userid', getAllUserCategories);
 categoryRouter.get('/byemail/:email', getAllUserCategories);
 categoryRouter.get('/', getAllCategories);
 categoryRouter.post('/', createCategory);
-categoryRouter.put('/', updateCategory);
+categoryRouter.post('/update', updateCategory);
 
 module.exports = {
     categoryRouter
