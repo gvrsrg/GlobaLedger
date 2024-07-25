@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 
 const { userRouter } = require('./routes/userRouter.js')
 const { accountRouter } = require('./routes/accountRouter.js');
+const { categoryRouter } = require('./routes/categoryRouter.js');
+
 const { _createUser, _getUserByEmail } = require('./models/userModel.js');
 
 const app = express()
@@ -40,9 +42,9 @@ app.listen(PORT, () => {
     console.log(`server on port ${PORT}`);
 })
 
-app.use('/api/users',userRouter)
-app.use('/api/accounts',accountRouter)
-
+app.use('/api/users', userRouter)
+app.use('/api/accounts', accountRouter)
+app.use('/api/cat', categoryRouter)
 
 //Signup/Login/Logout authentication logic:
 

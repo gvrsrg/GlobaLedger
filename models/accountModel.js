@@ -1,11 +1,11 @@
 const { db } = require('../config/db.js')
 
 const _createAccount = async (accountInfo) => {
-    const {balance, currency, name, userId } = userInfo
+    const {balance, currency, name, userid } = accountInfo
     try {
         const [newAccount] = await db('accounts')
         .insert([
-            {balance, currency, name, userId }
+            {balance, currency, name, userid }
         ], ['accountid', 'name', 'balance', 'currency']
         );
         return newAccount
