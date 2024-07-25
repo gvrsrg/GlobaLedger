@@ -1,8 +1,13 @@
 const { db } = require('../config/db.js')
+const { _getUserByEmail } = require('./userModel.js')
 
 const _createAccount = async (accountInfo) => {
-    const {balance, currency, name, userid } = accountInfo
+    let {balance, currency, name, userid, email } = accountInfo
     try {
+        if (!userid){
+            const user = await _getUserByEmail(email)
+            userid = user.userid
+        }
         const [newAccount] = await db('accounts')
         .insert([
             {balance, currency, name, userid }

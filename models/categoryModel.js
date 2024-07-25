@@ -1,8 +1,13 @@
 const { db } = require('../config/db.js')
+const { _getUserByEmail } = require('./userModel.js')
 
 const _createCategory = async (categoryInfo) => {
-    const { currency, name, budgetamount, userid } = categoryInfo
+    let { currency, name, budgetamount, userid, email } = categoryInfo
     try {
+        if (!userid){
+            const user = await _getUserByEmail(email)
+            userid = user.userid
+        }
         const newCategory = await db('categories')
         .insert([
             {budgetamount, currency, name, userid }

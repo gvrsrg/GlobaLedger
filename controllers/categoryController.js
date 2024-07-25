@@ -1,8 +1,8 @@
 const { _createCategory, _getAllCategories, _getAllUserCategories, _getCategoryById } = require('../models/categoryModel.js')
 
 const createCategory = async (req, res) => {
-    const { currency, name, budgetamount, userid } = req.body
-    const categoryInfo = { currency, name, budgetamount, userid } 
+    const { currency, name, budgetamount, userid, email } = req.body
+    const categoryInfo = { currency, name, budgetamount, userid, email } 
     try {
         const newCategory = await _createCategory(categoryInfo)
         res.json(newCategory)
