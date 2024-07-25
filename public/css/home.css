@@ -1,0 +1,28 @@
+#home-not-logged-in{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #E0CB76;
+    h1 {
+        font-family: cursive;
+        font-size: 60px;
+    }
+    button {
+        font-size: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        padding: 8px;
+        width: 200px;
+    }
+
+    #signupBtn {
+        background-color: #E0CB76;
+        color: black;
+    }
+    #loginBtn {
+        background-color: black;
+        color: #E0CB76; 
+        border: 2px solid #E0CB76;
+    }
+
+}

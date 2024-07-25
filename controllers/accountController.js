@@ -5,7 +5,7 @@ const createAccount = async (req, res) => {
     const accountInfo = { balance, currency, name, userid, email } 
     try {
         const newAccount = await _createAccount(accountInfo)
-        res.json(newAccount)
+        res.redirect('/settings')
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error creating account"})

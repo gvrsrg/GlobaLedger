@@ -1,5 +1,5 @@
 <header>
-    <h1>GlobaLedger</h1>
+    <a href="/"><h1>GlobaLedger</h1></a>
     <% if(loggedIn) {%>
         <div id="avatar-container">
             <div id="user-avatar">
@@ -18,16 +18,19 @@
     <% } %>
 </header>
 <script>
-    document.getElementById('user-avatar').addEventListener('click', () => {
-        const menu = document.getElementById('avatar-menu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.addEventListener('click', (event) => {
-        const avatar = document.getElementById('user-avatar');
-        const menu = document.getElementById('avatar-menu');
-        if (!avatar.contains(event.target) && !menu.contains(event.target)) {
-            menu.style.display = 'none';
-        }
-    });
+    var loggedIn = <%- JSON.stringify(loggedIn) %>;
+    if(loggedIn){
+        document.getElementById('user-avatar').addEventListener('click', () => {
+            const menu = document.getElementById('avatar-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        document.addEventListener('click', (event) => {
+            const avatar = document.getElementById('user-avatar');
+            const menu = document.getElementById('avatar-menu');
+            if (!avatar.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    }
 </script>

@@ -6,7 +6,7 @@ const createCategory = async (req, res) => {
     const categoryInfo = { currency, name, budgetamount, userid, email } 
     try {
         const newCategory = await _createCategory(categoryInfo)
-        res.json(newCategory)
+        res.redirect('/settings')
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error creating category"})
@@ -14,11 +14,12 @@ const createCategory = async (req, res) => {
 }
 
 const updateCategory = async (req, res) => {
-    const { currency, name, budgetamount, userid, email } = req.body
-    const categoryInfo = { currency, name, budgetamount, userid, email } 
+    console.log('updateCatgeory req: ', req.body)
+    const { currency, name, budgetamount, userid, email, categoryid } = req.body
+    const categoryInfo = { currency, name, budgetamount, userid, email, categoryid } 
     try {
-        const category = await _updateCategory(categoryInfo)
-        res.json(category)
+        await _updateCategory(categoryInfo)
+        res.redirect('/settings')
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error updating category"})
