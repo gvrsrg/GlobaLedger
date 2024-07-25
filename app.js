@@ -6,6 +6,7 @@ const { currencies } = require('./config/currencies.js')
 const { userRouter } = require('./routes/userRouter.js')
 const { accountRouter } = require('./routes/accountRouter.js');
 const { categoryRouter } = require('./routes/categoryRouter.js');
+const { transactionRouter } = require('./routes/transactionRouter.js');
 
 const { _createUser, _getUserByEmail } = require('./models/userModel.js');
 const { _getAllUserCategories } = require('./models/categoryModel.js');
@@ -57,6 +58,7 @@ app.listen(PORT, () => {
 app.use('/api/users', userRouter)
 app.use('/api/accounts', accountRouter)
 app.use('/api/cat', categoryRouter)
+app.use('/api/transactions', transactionRouter)
 
 //Signup/Login/Logout authentication logic:
 
