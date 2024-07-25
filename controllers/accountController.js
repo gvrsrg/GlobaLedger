@@ -1,8 +1,8 @@
 const { _createAccount, _getAllAccounts, _getAllUserAccounts, _getAccountById } = require('../models/accountModel.js')
 
 const createAccount = async (req, res) => {
-    const { balance, currency, name, userId } = req.body
-    const accountInfo = { balance, currency, name, userId } 
+    const { balance, currency, name, userid, email } = req.body
+    const accountInfo = { balance, currency, name, userid, email } 
     try {
         const newAccount = await _createAccount(accountInfo)
         res.json(newAccount)

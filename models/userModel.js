@@ -56,10 +56,27 @@ const _getUserByEmail = async (email) =>{
     }
 }
 
+const _getUser = async (userInfo) =>{
+    const {userid, email} = userInfo
+    //let email= 'gvrsrg@gmail4.com'
+    console.log("get user");
+    try {
+        const user = await db("users")
+        .select("users.userid", "users.email")
+        .where('email', '=', ''+email)
+        .orWhere('users.userid', userid)
+        console.log(user);
+        return user
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
 
 module.exports = {
     _createUser,
     _getAllUsers,
     _getUserById,
-    _getUserByEmail
+    _getUserByEmail,
+    _getUser
 }
