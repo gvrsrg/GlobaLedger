@@ -1,0 +1,33 @@
+<header>
+    <h1>GlobaLedger</h1>
+    <% if(loggedIn) {%>
+        <div id="avatar-container">
+            <div id="user-avatar">
+                <%= user.firstname[0] + user.lastname[0]%>
+            </div>
+            <menu id="avatar-menu">
+                <a href="/logout"><li>Logout</li></a>
+                <a href="/settings"><li>Settings</li></a>
+            </menu>
+        </div>
+    <% } else { %>
+        <div id="notLoggedIn">
+            <a href="/signup"><button class="header-button" id="signupBtn">Sign Up</button></a>
+            <a href="/login"><button class="header-button" id="loginBtn">Login</button></a>
+        </div>
+    <% } %>
+</header>
+<script>
+    document.getElementById('user-avatar').addEventListener('click', () => {
+        const menu = document.getElementById('avatar-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (event) => {
+        const avatar = document.getElementById('user-avatar');
+        const menu = document.getElementById('avatar-menu');
+        if (!avatar.contains(event.target) && !menu.contains(event.target)) {
+            menu.style.display = 'none';
+        }
+    });
+</script>

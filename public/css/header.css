@@ -1,0 +1,76 @@
+header {
+    margin: 0%;
+    height: 60px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    border-bottom: 3px solid #E0CB76;
+    h1 {
+        margin: 0%;
+        color: #E0CB76;
+    }
+
+    #avatar-container {
+        position: relative;
+        #user-avatar {
+            border-radius: 50%;
+            background-color: #E0CB76;
+            color: black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        #avatar-menu {
+            display: none;
+            position: fixed;
+            font-size: 18px;
+            top: 60px;
+            right: 0px;
+            width: 150px;
+            margin: 0%;
+            padding: 12px 24px;
+            background-color: #E0CB76;
+            box-shadow: -3px 3px 3px rgba(224, 203, 118, 0.5);
+            z-index: 1000;
+            li {
+                list-style: none;
+                line-height: 40px;
+            }
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    }
+        
+    #notLoggedIn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        #signupBtn {
+            background-color: #E0CB76;
+            color: black;
+            border: none;
+        }
+        #loginBtn {
+            background-color: black;
+            color: #E0CB76;
+            border: 2px solid #E0CB76;
+        }
+        
+        .header-button {
+            height: 30px;
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+        
+}
