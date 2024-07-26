@@ -1,3 +1,126 @@
+#dashboard {
+    padding: 32px;
+    h2 {
+        color: #E0CB76;
+    }
+    #top-container {
+        display: flex;
+        width: 100%;
+        #add-transaction-btn {
+            font-size: 24px;
+            height: 46px;
+            padding: 0px 16px;
+            border: none;
+            border-radius: 23px;
+            background-color: #E0CB76;
+            color: black;
+        }
+        #add-transaction-form {
+            display: none;
+            flex-direction: column;
+            border: 1px solid #E0CB76;
+            padding: 16px;
+            border-radius: 8px;
+            > * {
+                margin-top: 12px;
+            }
+            input, button, select {
+                border-radius: 8px;
+                padding: 5px;
+                border: none;
+            }
+            #buttons-container {
+                margin-top: 24px;
+                button {
+                    border-radius: 8px;
+                    height: 32px;
+                    width: 200px;
+                    cursor: pointer;
+                }
+                .button-fill {
+                    background-color: #E0CB76;
+                    color: black;
+                    border: none;
+                }
+                .button-outline {
+                    background-color: black;
+                    color: #E0CB76;
+                    border: 2px solid #E0CB76;
+                    margin-left: 8px;
+                }
+            }
+            
+        }
+
+        #budgets-container {
+            width: 100%;
+            .category-chart-container {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                h3 {
+                    width: 100px;
+                }
+                .outer-fill-chart {
+                    width: 400px;
+                    height: 32px;
+                    border-radius: 16px;
+                    border: 1px solid #E0CB76;
+                    overflow: hidden;
+                    position: relative;
+                    .inner-fill-chart {
+                        background-color: #E0CB76;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        font-weight: 600;
+                        padding-left: 12px;
+                        overflow: visible;
+                        white-space: nowrap;
+                        position: absolute;
+                        left: 0;
+                        top: 0; 
+                    }
+                }
+            }
+        }
+            
+        #accounts-container{
+            padding-left: 64px;
+            width: 100%;
+            h2 {
+                margin-top: 0%;
+            }
+        }
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        th,td {
+            padding: 8px 16px 8px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #E0CB76;
+        }
+        th {
+            background-color: #E0CB76;
+            color: black;
+            border: none;
+            &:first-child {
+                border-top-left-radius: 8px;
+            }
+            &:last-child {
+                border-top-right-radius: 8px;
+            }
+            &:not(:first-child){
+                border-left: 1px solid black;
+            }
+        }
+
+    }
+}
+    
 #home-not-logged-in{
     display: flex;
     flex-direction: column;

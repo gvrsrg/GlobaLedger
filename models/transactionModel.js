@@ -45,9 +45,9 @@ const _getUserTransactionsForPeriod = async (userInfo) =>{
         .join("users", { "users.userid": "transactions.userid" })
         .join("accounts", { "accounts.accountid": "transactions.accountid" })
         .join("categories", { "categories.categoryid": "transactions.categoryid" })
-        .whereBetween("date", [fromdate, todate] )
-        //.andWhere('email', ''+email)
-        //.orWhere('users.userid', userid)
+        .whereBetween("date", [fromdate, todate])
+        .andWhere('transactions.userid', ''+userid)
+        .select('transactions.*', 'accounts.name as accountname', 'categories.name as categoryname')
         return transactions
     } catch (error) {
         console.log(error);

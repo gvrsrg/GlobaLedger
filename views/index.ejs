@@ -9,11 +9,92 @@
 <body>
     <%- include('partials/header', {loggedIn: locals.loggedIn, user: locals.user}) %>
     <% if(locals.user) {%>
-        
+        <div id="dashboard">
+            <div id="top-container">
+                <div id="budgets-container">
+                    <button id="add-transaction-btn"><b>+ Add Transaction</b></button>
+                    <form id="add-transaction-form" action="http://localhost:3000/api/transactions/" method="post">
+                        <h2>ADD TRANSACTION:</h2>
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" required>
+                        <label for="amount">Amount:</label>
+                        <input type="number" step="0.01" id="amount" name="amount" required>
+                        <% JSON.stringify(currencies) %>
+                        <label for="currency">Currency:</label>
+                        <select name="currency" id="currency" required>
+                            <% for(const currency of locals.currencies) {%>
+                                <option value="<%= currency.code %>"><%= currency.name %></option>
+                            <% } %>
+                        </select>
+                        <label for="category">Category:</label>
+                        <select name="categoryid" id="categoryid" required>
+                            <% for(const category of locals.categories) {%>
+                                <option value="<%= category.categoryid %>"><%= category.name %></option>
+                            <% } %>
+                        </select>
+                        <label for="account">Account:</label>
+                        <select name="accountid" id="accountid" required>
+                            <% for(const account of locals.accounts) {%>
+                                <option value="<%= account.accountid %>"><%= account.name %></option>
+                            <% } %>
+                        </select>
+                        <div id="buttons-container">
+                            <button id="submit-transaction" class="button-fill" type="submit"> <b>Add Transaction</b></button>
+                            <button id="cancel-transaction" class="button-outline" type="button"><b>Cancel</b></button>
+                        </div>
+                    </form>
+                    <div id="categories-container">
+                        <h2>Budget</h2>
+                        <% for( const category of locals.categories ) { %>
+                            <div class="category-chart-container">
+                                <h3><%= category.name %></h3> <div class="outer-fill-chart"><div class="inner-fill-chart" style="width: <%= '33%' %>;"><span><%= '1300 (33%)' %></span></div></div> <span><%= category.budgetamount %> <%= category.currency %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <div id="accounts-container">
+                    <h2>Accounts</h2>
+                    <table>
+                        <thead>
+                            <th>Account</th>
+                            <th>Balance</th>
+                            <th>Currency</th>
+                        </thead>
+                        <% for( const account of locals.accounts) { %>
+                            <tr>
+                                <td><%= account.name %></td>
+                                <td><%= account.balance %></td>
+                                <td><%= account.currency %></td>
+                            </tr>
+                        <% } %>
+                    </table>
+                </div>
+            </div>
+            <div id="transactions-container">
+                <h2>Transactions</h2>
+                <table>
+                    <thead>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Account</th>
+                    </thead>
+                    <% for(const transaction of transactions) {%>
+                        <tr>
+                            <td><%= transaction.amount %></td>
+                            <td><%= transaction.currency %></td>
+                            <td><%= transaction.description %></td>
+                            <td><%= transaction.categoryname %></td>
+                            <td><%= transaction.accountname %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
 
     <% } else { %>
         <div id="home-not-logged-in">
-
             <h1>GlobaLedger</h1>
             <h2>Track your finances across currencies.</h2>
             <ul>
@@ -26,5 +107,19 @@
             <a href="/login"><button class="header-button" id="loginBtn">Login</button></a>
         </div>
     <% } %>
+    <script>
+        const addButton = document.getElementById('add-transaction-btn');
+        const addForm = document.getElementById('add-transaction-form');
+        const cancelBtn = document.getElementById('cancel-transaction');
+        addButton.addEventListener('click', () => {
+            addForm.style.display = 'flex';
+            addButton.style.display = 'none';
+        })
+        cancelBtn.addEventListener('click', () => {
+
+            addForm.style.display = 'none';
+            addButton.style.display = 'block';
+        })
+    </script>
 </body>
 </html>
