@@ -2,11 +2,13 @@ const { _addTransaction, _getAllTransactionsForPeriod, _getUserTransactionsForPe
 
 
 const addTransaction = async (req, res) => {
-    const { amount, categoryid, currency, description, date, accountid, userid, email } = req.body
+    const { amount, categoryid, currency, description, accountid } = req.body
+    const { userid, email } = req.session.user;
+    const date = new Date().toISOString();
     const transactionInfo = { amount, categoryid, currency, description, date, accountid, userid, email } 
     try {
-        const newTransaction = await _addTransaction(transactionInfo)
-        res.json(newTransaction)
+        await _addTransaction(transactionInfo)
+        res.redirect('/')
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error adding transaction"})
