@@ -36,14 +36,13 @@ const _getAllUserAccounts = async (userInfo) =>{
     const {userid, email} = userInfo
     //let email= 'gvrsrg@gmail4.com'
     console.log("get all user accounts");
-    console.log(userInfo, typeof email);
     try {
         const accounts = await db("accounts")
         .select("accounts.accountid", "accounts.name", "accounts.currency", "accounts.balance", "users.userid", "users.email")
         .leftJoin("users", { "users.userid": "accounts.userid" } )
         .where('email', '=', ''+email)
         .orWhere('users.userid', userid)
-        console.log(accounts);
+        // console.log(accounts);
         return accounts
     } catch (error) {
         console.log(error);
@@ -66,6 +65,21 @@ const _getAccountById = async (id) =>{
     }
 }
 
+const _updateAccountById = async (accountid, accountInfo) =>{
+    let {balance, currency, name} = accountInfo
+    try {
+        const account = await db('accounts')
+        .update([
+            accountInfo
+        ], ['accountid', 'name', 'balance', 'currency']
+        )
+        .where("accountid", accountid);
+        return account
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
 
 
 
@@ -73,5 +87,6 @@ module.exports = {
     _createAccount,
     _getAllAccounts,
     _getAllUserAccounts,
-    _getAccountById
+    _getAccountById,
+    _updateAccountById
 }

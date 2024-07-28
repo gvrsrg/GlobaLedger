@@ -1,4 +1,4 @@
-const { _createAccount, _getAllAccounts, _getAllUserAccounts, _getAccountById } = require('../models/accountModel.js')
+const { _createAccount, _getAllAccounts, _getAllUserAccounts, _getAccountById, _updateAccountById } = require('../models/accountModel.js')
 
 const createAccount = async (req, res) => {
     const { balance, currency, name, userid, email } = req.body
@@ -25,7 +25,7 @@ const getAllAccounts = async (req, res) => {
 const getAllUserAccounts = async (req, res) => {
     try {
         let { userid, email } = req.params
-        console.log(req.params);
+        // console.log(req.params);
 
         userid = userid || '00000000-0000-0000-0000-000000000000'
         //email = email || ''
@@ -52,5 +52,16 @@ const getAccountById = async (req, res) => {
         res.status(500).json({error:"internal server error getting account by id"})
     }
 }
-
-module.exports = { createAccount, getAllAccounts, getAllUserAccounts, getAccountById }
+const updateAccountById = async (req, res) => {
+    const { accountid } = req.params
+    const { balance, currency, name } = req.body
+    const accountInfo = { balance, currency, name, } 
+    try {
+        const account = await _updateAccountById(accountid, accountInfo)
+        res.json(account)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"internal server error updating account by id"})
+    }
+}
+module.exports = { createAccount, getAllAccounts, getAllUserAccounts, getAccountById, updateAccountById }
