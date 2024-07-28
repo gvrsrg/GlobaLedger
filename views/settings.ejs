@@ -113,7 +113,7 @@
                         <label for="currency">Currency:</label> <br>
                         <select name="currency" id="currency">
                             <% for(currency of locals.currencies) { %>
-                                <option value="<%= currency.code %>"><%= currency  %></option>
+                                <option value="<%= currency.code %>"><%= currency.name  %></option>
                             <% } %>
                         </select>
                     </div>
