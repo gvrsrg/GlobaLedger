@@ -11,7 +11,7 @@ accountRouter.get('/byuserid/:userid', getAllUserAccounts);
 accountRouter.get('/byemail/:email', getAllUserAccounts);
 accountRouter.get('/', getAllAccounts);
 accountRouter.post('/', createAccount);
-accountRouter.put('/:accountid', updateAccountById);
+accountRouter.post('/:accountid', updateAccountById);
 
 module.exports = {
     accountRouter
