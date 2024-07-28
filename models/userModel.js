@@ -18,6 +18,21 @@ const _createUser = async (userInfo) => {
     }
 }
 
+
+const _updateUser = async (userid, userInfo) =>{
+    const {firstname, lastname} = userInfo
+    try {
+        const [user] = await db('users')
+        .update({firstname, lastname}, ['userid', 'email', 'password', 'firstname', 'lastname'])
+        .where("userid", userid)
+        return user
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
+
+
 const _getAllUsers = async () =>{
     console.log("get all users");
     try {
@@ -78,5 +93,6 @@ module.exports = {
     _getAllUsers,
     _getUserById,
     _getUserByEmail,
-    _getUser
+    _getUser,
+    _updateUser
 }

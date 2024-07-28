@@ -147,16 +147,18 @@
         </div>
     <% } else { %>
         <div id="home-not-logged-in">
-            <h1>GlobaLedger</h1>
-            <h2>Track your finances across currencies.</h2>
+            <h1 class="logo">GlobaLedger</h1>
+            <h1>Track your finances</h1>
             <ul>
-                <li>Smart Categorization</li>
-                <li>Automatic currency conversion</li>
-                <li>Recurring expense scheduler</li>
+                <li>Set Budgets</li>
+                <li>Categorize Expenses</li>
+                <li>Check Account Balances</li>
             </ul>
-            <a href="/signup"><button class="header-button" id="signupBtn">Sign Up</button></a>
-            <br>
-            <a href="/login"><button class="header-button" id="loginBtn">Login</button></a>
+            <h1><i>Across any combination of currencies</i></h1>
+            <div id="buttons-div">
+                <a href="/signup"><button class="header-button" id="signupBtn">Sign Up</button></a>
+                <a href="/login"><button class="header-button" id="loginBtn">Login</button></a>
+            </div>
         </div>
     <% } %>
     <script>
@@ -178,7 +180,7 @@
         [...cancelBtns].forEach(btn => btn.addEventListener('click', () => {
             addExpenseForm.style.display = 'none';
             addIncomeForm.style.display = 'none';
-            addBtnsContainer.style.display = 'block';
+            addBtnsContainer.style.display = 'flex';
         }))
     </script>
 </body>
