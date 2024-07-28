@@ -49,6 +49,32 @@ const _getAllUserAccounts = async (userInfo) =>{
         throw error
     }
 }
+const _getAllUserAccountsWithBalance = async (userInfo) =>{
+    let {userid, email} = userInfo
+    //let email= 'gvrsrg@gmail4.com'
+    console.log("get all user accounts");
+    try {
+        if (!userid){
+            const user = await _getUserByEmail(email)
+            userid = user.userid
+        }
+        console.log(userid);
+        const accounts = await db("accounts")
+        .where('accounts.userid', ''+userid)
+        .leftJoin('transactions',{'accounts.accountid':'transactions.accountid'})
+        .select("accounts.name", "accounts.currency","transactions.accountcurrencyamount")
+        //.where('transactions.userid', ''+userid)
+        .groupBy("accounts.name", "accounts.currency")
+        .sum('transactions.accountcurrencyamount as actualbalance')
+        // console.log(accounts);
+        return accounts
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+
+}
+
 //TODO: _getUserAccounts by currency
 
 const _getAccountById = async (id) =>{
@@ -84,6 +110,7 @@ module.exports = {
     _createAccount,
     _getAllAccounts,
     _getAllUserAccounts,
+    _getAllUserAccountsWithBalance,
     _getAccountById,
     _updateAccountById
 }

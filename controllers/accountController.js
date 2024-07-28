@@ -1,4 +1,4 @@
-const { _createAccount, _getAllAccounts, _getAllUserAccounts, _getAccountById, _updateAccountById } = require('../models/accountModel.js')
+const { _createAccount, _getAllAccounts, _getAllUserAccounts, _getAllUserAccountsWithBalance, _getAccountById, _updateAccountById } = require('../models/accountModel.js')
 
 const createAccount = async (req, res) => {
     const { balance, currency, name, userid, email } = req.body
@@ -27,16 +27,34 @@ const getAllUserAccounts = async (req, res) => {
         let { userid, email } = req.params
         // console.log(req.params);
 
-        userid = userid || '00000000-0000-0000-0000-000000000000'
+        //userid = userid || '00000000-0000-0000-0000-000000000000'
         //email = email || ''
-
         const userInfo = { userid, email }
+        console.log(userInfo);
 
         const accounts = await _getAllUserAccounts(userInfo)
         res.json(accounts)
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "internal server error getting account list" })
+    }
+}
+
+const getAllUserAccountsWithBalance = async (req, res) => {
+    try {
+        let { userid, email } = req.params
+        // console.log(req.params);
+
+        // userid = userid || '00000000-0000-0000-0000-000000000000'
+        // //email = email || ''
+
+        const userInfo = { userid, email }
+
+        const accounts = await _getAllUserAccountsWithBalance(userInfo)
+        res.json(accounts)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "internal server error getting account list with balance" })
     }
 }
 
@@ -64,4 +82,4 @@ const updateAccountById = async (req, res) => {
         res.status(500).json({error:"internal server error updating account by id"})
     }
 }
-module.exports = { createAccount, getAllAccounts, getAllUserAccounts, getAccountById, updateAccountById }
+module.exports = { createAccount, getAllAccounts, getAllUserAccounts, getAccountById, updateAccountById, getAllUserAccountsWithBalance }
