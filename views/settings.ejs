@@ -12,7 +12,7 @@
         <h1>Settings</h1>
         <section id="profile-section">
             <h2>Profile</h2>
-            <form action="">
+            <form action="http://localhost:3000/api/users/update/<%= locals.user.userid %>" method="post">
                 <div class="form-inputs">
                     <div>
                         <label for="firstname">First Name:</label> <br>
