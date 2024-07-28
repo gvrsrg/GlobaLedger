@@ -71,15 +71,15 @@ const _getAllCategories = async () =>{
 const _getAllUserCategories = async (userInfo) =>{
     const {userid, email} = userInfo
     console.log("get all user categories");
-    console.log(userInfo, typeof email);
+    // console.log(userInfo, typeof email);
     try {
-        const accounts = await db("categories")
+        const categories = await db("categories")
         .select("categories.categoryid", "categories.name", "categories.currency", "categories.budgetamount", "users.userid", "users.email")
         .leftJoin("users", { "users.userid": "categories.userid" } )
         .where('email', '=', ''+email)
         .orWhere('users.userid', userid)
-        console.log(accounts);
-        return accounts
+        // console.log(categories);
+        return categories
     } catch (error) {
         console.log(error);
         throw error
