@@ -12,9 +12,12 @@
         <div id="dashboard">
             <div id="top-container">
                 <div id="budgets-container">
-                    <button id="add-transaction-btn"><b>+ Add Transaction</b></button>
-                    <form id="add-transaction-form" action="http://localhost:3000/api/transactions/" method="post">
-                        <h2>ADD TRANSACTION:</h2>
+                    <div id="add-transaction-btns">
+                        <button id="add-expense-btn"><b>+ Add Expense</b></button>
+                        <button id="add-income-btn"><b>+ Add Income</b></button>
+                    </div>
+                    <form id="add-expense-form" class="add-transaction-form" action="http://localhost:3000/api/transactions/" method="post">
+                        <h2>ADD EXPENSE:</h2>
                         <label for="description">Description:</label>
                         <input type="text" id="description" name="description" required>
                         <label for="amount">Amount:</label>
@@ -38,16 +41,47 @@
                                 <option value="<%= account.accountid %>"><%= account.name %></option>
                             <% } %>
                         </select>
-                        <div id="buttons-container">
-                            <button id="submit-transaction" class="button-fill" type="submit"> <b>Add Transaction</b></button>
-                            <button id="cancel-transaction" class="button-outline" type="button"><b>Cancel</b></button>
+                        <div class="buttons-container">
+                            <button class="submit-transaction button-fill" type="submit"> <b>Add Transaction</b></button>
+                            <button class="cancel-transaction button-outline" type="button"><b>Cancel</b></button>
+                        </div>
+                    </form>
+                    <form id="add-income-form" class="add-transaction-form" action="http://localhost:3000/api/transactions/" method="post">
+                        <h2>ADD INCOME:</h2>
+                        <input type="hidden" name="income" value="true">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" required>
+                        <label for="amount">Amount:</label>
+                        <input type="number" step="0.01" id="amount" name="amount" required>
+                        <% JSON.stringify(currencies) %>
+                        <label for="currency">Currency:</label>
+                        <select name="currency" id="currency" required>
+                            <% for(const currency of locals.currencies) {%>
+                                <option value="<%= currency.code %>"><%= currency.name %></option>
+                            <% } %>
+                        </select>
+                        <label for="account">Account:</label>
+                        <select name="accountid" id="accountid" required>
+                            <% for(const account of locals.accounts) {%>
+                                <option value="<%= account.accountid %>"><%= account.name %></option>
+                            <% } %>
+                        </select>
+                        <div class="buttons-container">
+                            <button class="submit-transaction button-fill" type="submit"> <b>Add Transaction</b></button>
+                            <button class="cancel-transaction button-outline" type="button"><b>Cancel</b></button>
                         </div>
                     </form>
                     <div id="categories-container">
                         <h2>Budget</h2>
-                        <% for( const category of locals.categories ) { %>
+                        <% for( const category of locals.budgets ) { %>
                             <div class="category-chart-container">
-                                <h3><%= category.name %></h3> <div class="outer-fill-chart"><div class="inner-fill-chart" style="width: <%= '33%' %>;"><span><%= '1300 (33%)' %></span></div></div> <span><%= category.budgetamount %> <%= category.currency %></span>
+                                <h3><%= category.categoryname %></h3> 
+                                <div class="chart-currency-amount">
+                                    <div class="outer-fill-chart">
+                                        <div class="inner-fill-chart" style="width: <%= (category.realamount / category.budgetamount *100) + '%' %>;"><span><%= category.realamount %>(<%= (category.realamount / category.budgetamount *100).toString().split('.')[0] %>%)</span></div>
+                                    </div> 
+                                    <span><b><%= category.budgetamount %> <%= category.currency %></b></span>
+                                </div>
                             </div>
                         <% } %>
                     </div>
@@ -72,27 +106,45 @@
             </div>
             <div id="transactions-container">
                 <h2>Transactions</h2>
-                <table>
-                    <thead>
-                        <th>Amount</th>
-                        <th>Currency</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Account</th>
-                    </thead>
+                <div id="mobile-transactions">
                     <% for(const transaction of transactions) {%>
-                        <tr>
-                            <td><%= transaction.amount %></td>
-                            <td><%= transaction.currency %></td>
-                            <td><%= transaction.description %></td>
-                            <td><%= transaction.categoryname %></td>
-                            <td><%= transaction.accountname %></td>
-                        </tr>
+                        <div class="transaction-div">
+                            <div>
+                                <small><%= transaction.date.toString().slice(0,15) %></small>
+                            </div>
+                            <div>
+                                <div><b><%= transaction.description %></b></div><div><b><%= transaction.amount %><%= transaction.currency %></b></div>
+                            </div>
+                            <div>
+                                <div><small><%= transaction.categoryname %></small></div><div><small><%= transaction.accountname %></small></div>
+                            </div>
+                        </div>
                     <% } %>
-                </table>
+                </div>
+                <div id="desktop-transactions">
+                    <table>
+                        <thead>
+                            <th>Amount</th>
+                            <th>Currency</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Account</th>
+                            <th>Date</th>
+                        </thead>
+                        <% for(const transaction of transactions) {%>
+                            <tr>
+                                <td><%= transaction.amount %></td>
+                                <td><%= transaction.currency %></td>
+                                <td><%= transaction.description %></td>
+                                <td><%= transaction.categoryname %></td>
+                                <td><%= transaction.accountname %></td>
+                                <td><%= transaction.date.toString().slice(0,15) %></td>
+                            </tr>
+                        <% } %>
+                    </table>
+                </div>
             </div>
         </div>
-
     <% } else { %>
         <div id="home-not-logged-in">
             <h1>GlobaLedger</h1>
@@ -108,18 +160,26 @@
         </div>
     <% } %>
     <script>
-        const addButton = document.getElementById('add-transaction-btn');
-        const addForm = document.getElementById('add-transaction-form');
-        const cancelBtn = document.getElementById('cancel-transaction');
-        addButton.addEventListener('click', () => {
-            addForm.style.display = 'flex';
-            addButton.style.display = 'none';
-        })
-        cancelBtn.addEventListener('click', () => {
-
-            addForm.style.display = 'none';
-            addButton.style.display = 'block';
-        })
+        const addBtnsContainer = document.getElementById('add-transaction-btns');
+        const addExpenseButton = document.getElementById('add-expense-btn');
+        const addIncomeButton = document.getElementById('add-income-btn');
+        const addExpenseForm = document.getElementById('add-expense-form');
+        const addIncomeForm = document.getElementById('add-income-form');
+        const cancelBtns = document.getElementsByClassName('cancel-transaction');
+        console.log(cancelBtns)
+        addExpenseButton.addEventListener('click', () => {
+            addExpenseForm.style.display = 'flex';
+            addBtnsContainer.style.display = 'none';
+        });
+        addIncomeButton.addEventListener('click', () => {
+            addIncomeForm.style.display = 'flex';
+            addBtnsContainer.style.display = 'none';
+        });
+        [...cancelBtns].forEach(btn => btn.addEventListener('click', () => {
+            addExpenseForm.style.display = 'none';
+            addIncomeForm.style.display = 'none';
+            addBtnsContainer.style.display = 'block';
+        }))
     </script>
 </body>
 </html>
