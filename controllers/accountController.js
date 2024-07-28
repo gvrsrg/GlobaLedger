@@ -54,11 +54,11 @@ const getAccountById = async (req, res) => {
 }
 const updateAccountById = async (req, res) => {
     const { accountid } = req.params
-    const { balance, currency, name } = req.body
-    const accountInfo = { balance, currency, name, } 
+    const { name } = req.body
+    const accountInfo = {  name }
     try {
-        const account = await _updateAccountById(accountid, accountInfo)
-        res.json(account)
+        await _updateAccountById(accountid, accountInfo)
+        res.redirect('/settings')
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error updating account by id"})
