@@ -104,7 +104,6 @@ const _getUserTransactionsForPeriod = async (userInfo) =>{
 
 const _getUserBudgetForPeriod = async (userInfo) =>{
     let { fromdate, todate, userid, email } = userInfo
-    console.log(userInfo);
     try {
         //userid = userid || '00000000-0000-0000-0000-000000000000'
         if (!userid){
@@ -120,9 +119,8 @@ const _getUserBudgetForPeriod = async (userInfo) =>{
         .as('trn')
         //.toSQL()
 
-        console.log(subquery);
-
         const budget = await db('categories')
+        .where('categories.userid', ''+userid) // Move this filter before the join
         .leftJoin("transactions", { "categories.categoryid": "transactions.categoryid" })
         //.leftJoin("users", { "users.userid": "transactions.userid" })
         .whereNull('transactions.date')
