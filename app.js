@@ -10,7 +10,7 @@ const { transactionRouter } = require('./routes/transactionRouter.js');
 
 const { _createUser, _getUserByEmail } = require('./models/userModel.js');
 const { _getAllUserCategories } = require('./models/categoryModel.js');
-const { _getAllUserAccounts } = require('./models/accountModel.js');
+const { _getAllUserAccounts, _getAllUserAccountsWithBalance } = require('./models/accountModel.js');
 const { _getUserTransactionsForPeriod, _getUserBudgetForPeriod } = require('./models/transactionModel.js');
 const { getUserBudgetForPeriod } = require('./controllers/transactionController.js');
 
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 app.get('/', async (req, res) => {
     let user = req.session.user;
     if(user){
-        const userAccounts = await  _getAllUserAccounts({userid: user.userid, email: user.email});
+        const userAccounts = await  _getAllUserAccountsWithBalance({userid: user.userid, email: user.email});
         const userTransactions = await _getUserTransactionsForPeriod({
             fromdate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
             todate: new Date().toISOString(),
@@ -60,7 +60,7 @@ app.get('/settings', async (req, res) => {
     let user = req.session.user;
     console.log('user: ', user)
     if(user){
-        const userAccounts = await  _getAllUserAccounts({userid: user.userid, email: user.email});
+        const userAccounts = await  _getAllUserAccountsWithBalance({userid: user.userid, email: user.email});
         const userCategories = await _getAllUserCategories({userid: user.userid, email: user.email});
         res.render('settings', {loggedIn: !!user, user, accounts: userAccounts, categories: userCategories, incomes: [], recurringExpenses: [], currencies});
     } else res.redirect('/');
