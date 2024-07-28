@@ -1,6 +1,5 @@
 const { db } = require('../config/db.js')
 const { _getUserByEmail } = require('./userModel.js')
-const { _addTransaction } = require('./transactionModel.js')
 
 const _createAccount = async (accountInfo) => {
     let {balance, currency, name, userid, email } = accountInfo
