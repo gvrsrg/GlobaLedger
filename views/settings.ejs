@@ -30,9 +30,8 @@
             <h2>Accounts</h2>
             <% for(const account of locals.accounts){%>
                 <h3><%= account.name %></h3>
-                <form class="subsection-form" action="">
+                <form class="subsection-form" action="http://localhost:3000/api/accounts/<%= account.accountid %>" method="post">
                     <div class="form-inputs">
-
                         <div>
                             <label for="name">Name:</label> <br>
                             <input type="text" id="name" name="name" value="<%= account.name %>" placeholder="<%= account.name %>" required>

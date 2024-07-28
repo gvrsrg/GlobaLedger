@@ -66,13 +66,10 @@ const _getAccountById = async (id) =>{
 }
 
 const _updateAccountById = async (accountid, accountInfo) =>{
-    let {balance, currency, name} = accountInfo
+    let { name } = accountInfo
     try {
         const account = await db('accounts')
-        .update([
-            accountInfo
-        ], ['accountid', 'name', 'balance', 'currency']
-        )
+        .update({name})
         .where("accountid", accountid);
         return account
     } catch (error) {
