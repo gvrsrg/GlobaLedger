@@ -1,5 +1,4 @@
 const { db } = require('../config/db.js')
-const knex = require("knex");
 const { _getUserByEmail } = require('./userModel.js')
 const { _getAccountById } = require('./accountModel.js')
 const { _getCategoryById } = require('./categoryModel.js')
@@ -9,8 +8,13 @@ const getAmounts = async (transactionInfo) => {
     let { amount, categoryid, currency, description, date, accountid, userid, email } = transactionInfo
 
     try {
+        if (!categoryid){
+            const category = {currency:"qqq"};            
+        } else {
+            const category = _getCategoryById(categoryid);            
+        }
         const account = await _getAccountById(accountid);
-        const category = await _getCategoryById(categoryid);
+
 
         // console.log(accountid, account);
         // console.log(categoryid, category);
@@ -23,7 +27,10 @@ const getAmounts = async (transactionInfo) => {
             const rate = await getRate(currency, account.currency, amount)
             accountcurrencyamount = rate.conversion_result
         }
-        if (category.currency!=currency){
+
+        if ((!categoryid)){
+
+        } else if (category.currency!=currency){
             if (category.currency==account.currency){
                 categorycurrencyamount = accountcurrencyamount
             } else {
@@ -40,7 +47,7 @@ const getAmounts = async (transactionInfo) => {
 }
 
 const _addTransaction = async (transactionInfo) => {
-    let {amount, categoryid, currency, description, date, accountid, userid, email } = transactionInfo
+    let {amount, categoryid, currency, description, date, accountid, userid, email, income } = transactionInfo
 
 
     try {
@@ -49,7 +56,13 @@ const _addTransaction = async (transactionInfo) => {
             userid = user.userid
         }
 
-        const {accountcurrencyamount, categorycurrencyamount} = await getAmounts(transactionInfo)
+            let {accountcurrencyamount, categorycurrencyamount} = await getAmounts(transactionInfo)
+            if (income){
+                //categoryid = null
+                amount = -amount
+                accountcurrencyamount = amount
+                categorycurrencyamount = 0
+        }        
         const [newTransaction] = await db('transactions')
         .insert([
             {amount, categoryid, currency, description, date, accountid, userid, accountcurrencyamount, categorycurrencyamount}
@@ -94,6 +107,7 @@ const _getUserTransactionsForPeriod = async (userInfo) =>{
         .join("categories", { "categories.categoryid": "transactions.categoryid" })
         .whereBetween("date", [fromdate, todate])
         .andWhere('transactions.userid', ''+userid)
+        .andWhere('transactions.amount','>', 0)
         .select('transactions.*', 'accounts.name as accountname', 'categories.name as categoryname')
         return transactions
     } catch (error) {
@@ -103,6 +117,7 @@ const _getUserTransactionsForPeriod = async (userInfo) =>{
 }
 
 const _getUserBudgetForPeriod = async (userInfo) =>{
+    console.log('get user budget');
     let { fromdate, todate, userid, email } = userInfo
     try {
         //userid = userid || '00000000-0000-0000-0000-000000000000'
@@ -125,6 +140,9 @@ const _getUserBudgetForPeriod = async (userInfo) =>{
         //.leftJoin("users", { "users.userid": "transactions.userid" })
         .whereNull('transactions.date')
         .orWhereBetween("transactions.date", [fromdate, todate])
+        // .whereNotNull('transactions.categoryid')
+        .where('transactions.categorycurrencyamount','>',0)
+
         //.orWhere('transactions.date', undefined)
         .select('categories.name as categoryname', 'categories.budgetamount as budgetamount', 'categories.currency as currency')
         .where('categories.userid', ''+userid)

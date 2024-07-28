@@ -57,7 +57,7 @@ const _updateCategory = async (categoryInfo) => {
 
 
 const _getAllCategories = async () =>{
-    console.log("get all user categories");
+    console.log("get all categories");
     try {
         const categories = await db('categories')
         .join("users", { "users.userid": "categories.userid" })
