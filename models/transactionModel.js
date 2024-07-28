@@ -16,13 +16,13 @@ const getAmounts = async (transactionInfo) => {
         const account = await _getAccountById(accountid);
 
 
-        // console.log(accountid, account);
+        console.log(accountid, account);
         // console.log(categoryid, category);
 
 
         let accountcurrencyamount = amount
         let categorycurrencyamount = amount
-
+        //console.log({account_currency, currency});
         if (account.currency!=currency){
             const rate = await getRate(currency, account.currency, amount)
             accountcurrencyamount = rate.conversion_result
@@ -60,7 +60,7 @@ const _addTransaction = async (transactionInfo) => {
             if (income){
                 //categoryid = null
                 amount = -amount
-                accountcurrencyamount = amount
+                accountcurrencyamount = -accountcurrencyamount
                 categorycurrencyamount = 0
         }        
         const [newTransaction] = await db('transactions')
