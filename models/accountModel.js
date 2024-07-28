@@ -1,21 +1,36 @@
 const { db } = require('../config/db.js')
 const { _getUserByEmail } = require('./userModel.js')
+const { _addTransaction } = require('./transactionModel.js')
 
 const _createAccount = async (accountInfo) => {
     let {balance, currency, name, userid, email } = accountInfo
+ //   const transactionInfo = { balance, categoryid:"", currency, description:"Initial balance", date:new Date().toISOString(), accountid:newAccount.accountid, userid, email, income: true } 
+
+    const trx = await db.transaction();
     try {
         if (!userid){
             const user = await _getUserByEmail(email)
             userid = user.userid
         }
-        const [newAccount] = await db('accounts')
+
+        const [newAccount] = await trx('accounts')
         .insert([
             {balance, currency, name, userid }
         ], ['accountid', 'name', 'balance', 'currency']
         );
+        console.log(newAccount);
+        const accountid = newAccount.accountid
+        await trx('transactions')
+        .insert([
+            {amount:-balance, currency, description:"Initial balance", date:new Date().toISOString(), accountid, userid, accountcurrencyamount:-balance, categorycurrencyamount:0}
+        ], ['transactionid', 'amount', 'accountcurrencyamount', 'categorycurrencyamount', 'categoryid', 'currency', 'description', 'date', 'accountid', 'userid']
+        );
+        await trx.commit();
         return newAccount
 
     } catch (error) {
+        await trx.rollback();
+
         throw error
     }
 }
