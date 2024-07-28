@@ -6,29 +6,29 @@ const { getRate } = require('../config/currencies.js')
 
 const getAmounts = async (transactionInfo) => {
     let { amount, categoryid, currency, description, date, accountid, userid, email } = transactionInfo
-
+    let category;
     try {
         if (!categoryid){
-            const category = {currency:"qqq"};            
+            category = false;            
         } else {
-            const category = _getCategoryById(categoryid);            
+            category = await _getCategoryById(categoryid);          
         }
         const account = await _getAccountById(accountid);
 
 
-        // console.log(accountid, account);
+        console.log(accountid, account);
         // console.log(categoryid, category);
 
 
         let accountcurrencyamount = amount
         let categorycurrencyamount = amount
-
+        //console.log({account_currency, currency});
         if (account.currency!=currency){
             const rate = await getRate(currency, account.currency, amount)
             accountcurrencyamount = rate.conversion_result
         }
 
-        if ((!categoryid)){
+        if ((!category)){
 
         } else if (category.currency!=currency){
             if (category.currency==account.currency){
@@ -60,7 +60,7 @@ const _addTransaction = async (transactionInfo) => {
             if (income){
                 //categoryid = null
                 amount = -amount
-                accountcurrencyamount = amount
+                accountcurrencyamount = -accountcurrencyamount
                 categorycurrencyamount = 0
         }        
         const [newTransaction] = await db('transactions')

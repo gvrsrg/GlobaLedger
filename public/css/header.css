@@ -79,3 +79,11 @@ header {
     }
         
 }
+
+@media (max-width: 900px){
+    header {
+        #notLoggedIn {
+            display: none;
+        }
+    }
+}

@@ -140,8 +140,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     color: #E0CB76;
-    h1 {
+    .logo {
         font-family: cursive;
         font-size: 60px;
     }
@@ -151,6 +152,21 @@
         border-radius: 8px;
         padding: 8px;
         width: 200px;
+    }
+
+    ul {
+        list-style: none;
+        font-size: 28px;
+        padding: 0%;
+        li:before {
+            content: '✓';
+            padding-right: 8px;
+        }
+    }
+
+    #buttons-div {
+        display: flex;
+        gap: 8px;
     }
 
     #signupBtn {
@@ -173,6 +189,16 @@
             #add-transaction-btns {
                 flex-direction: column;
             }
+            .add-transaction-form {
+                .buttons-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    .button-outline {
+                        margin-left: 0px;
+                    }
+                }
+            }
             #accounts-container {
                 padding-left: 0px;
             }
@@ -193,6 +219,23 @@
                 justify-content: space-between;
                 margin-bottom: 5px;
             }
+        }
+    }
+
+    #home-not-logged-in {
+        padding: 16px;
+    }
+
+    #buttons-div {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        > * {
+            margin: 0px;
+            button {
+                margin: 0%;
+            }
+
         }
     }
 }

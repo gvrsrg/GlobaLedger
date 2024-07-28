@@ -1,4 +1,4 @@
-const { _createUser, _getAllUsers, _getUserByEmail, _getUserById } = require('../models/userModel.js')
+const { _createUser, _getAllUsers, _getUserByEmail, _getUserById, _updateUser } = require('../models/userModel.js')
 
 const createUser = async (req, res) => {
     const { email, password, firstname, lastname } = req.body
@@ -10,6 +10,20 @@ const createUser = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"internal server error creating user"})
+    }
+}
+
+const updateUser = async (req, res) => {
+    const { firstname, lastname } = req.body
+    const { userid } = req.params
+    const userInfo = { firstname, lastname }
+    try {
+        const updatedUser = await _updateUser(userid, userInfo)
+        req.session.user = updatedUser;
+        res.redirect('/settings')
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"internal server error updating user"})
     }
 }
 
@@ -83,4 +97,4 @@ const getUserById = async (req, res) => {
     }
 }
 
-module.exports = { getUsers, createUser, getUserByEmail, getAllUsers, getUserById }
+module.exports = { getUsers, createUser, getUserByEmail, getAllUsers, getUserById, updateUser }

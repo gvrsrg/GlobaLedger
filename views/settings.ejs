@@ -12,7 +12,7 @@
         <h1>Settings</h1>
         <section id="profile-section">
             <h2>Profile</h2>
-            <form action="">
+            <form action="http://localhost:3000/api/users/update/<%= locals.user.userid %>" method="post">
                 <div class="form-inputs">
                     <div>
                         <label for="firstname">First Name:</label> <br>
@@ -30,16 +30,15 @@
             <h2>Accounts</h2>
             <% for(const account of locals.accounts){%>
                 <h3><%= account.name %></h3>
-                <form class="subsection-form" action="">
+                <form class="subsection-form" action="http://localhost:3000/api/accounts/<%= account.accountid %>" method="post">
                     <div class="form-inputs">
-
                         <div>
                             <label for="name">Name:</label> <br>
                             <input type="text" id="name" name="name" value="<%= account.name %>" placeholder="<%= account.name %>" required>
                         </div>
                         <div>
                             <label for="balance">Balance:</label> <br>
-                            <div class="non-editable"><b><%= account.balance %></b></div>
+                            <div class="non-editable"><b><%= account.actualbalance %></b></div>
                         </div>
                         <div>
                             <label for="currency">Currency:</label> <br>
@@ -114,7 +113,7 @@
                         <label for="currency">Currency:</label> <br>
                         <select name="currency" id="currency">
                             <% for(currency of locals.currencies) { %>
-                                <option value="<%= currency.code %>"><%= currency  %></option>
+                                <option value="<%= currency.code %>"><%= currency.name  %></option>
                             <% } %>
                         </select>
                     </div>
