@@ -6,12 +6,12 @@ const { getRate } = require('../config/currencies.js')
 
 const getAmounts = async (transactionInfo) => {
     let { amount, categoryid, currency, description, date, accountid, userid, email } = transactionInfo
-
+    let category;
     try {
         if (!categoryid){
-            const category = {currency:"qqq"};            
+            category = false;            
         } else {
-            const category = _getCategoryById(categoryid);            
+            category = await _getCategoryById(categoryid);          
         }
         const account = await _getAccountById(accountid);
 
@@ -28,7 +28,7 @@ const getAmounts = async (transactionInfo) => {
             accountcurrencyamount = rate.conversion_result
         }
 
-        if ((!categoryid)){
+        if ((!category)){
 
         } else if (category.currency!=currency){
             if (category.currency==account.currency){
