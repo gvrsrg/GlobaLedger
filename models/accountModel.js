@@ -62,11 +62,12 @@ const _getAllUserAccountsWithBalance = async (userInfo) =>{
         const accounts = await db("accounts")
         .where('accounts.userid', ''+userid)
         .leftJoin('transactions',{'accounts.accountid':'transactions.accountid'})
-        .select("accounts.name", "accounts.currency","transactions.accountcurrencyamount")
-        //.where('transactions.userid', ''+userid)
+        .select("accounts.name as name", "accounts.currency as currency")
         .groupBy("accounts.name", "accounts.currency")
         .sum('transactions.accountcurrencyamount as actualbalance')
+        // .where('transactions.userid', ''+userid)
         // console.log(accounts);
+        accounts.forEach(e=> e.actualbalance = -e.actualbalance)
         return accounts
     } catch (error) {
         console.log(error);
