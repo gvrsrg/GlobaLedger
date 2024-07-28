@@ -4,6 +4,7 @@ const { _addTransaction, _getAllTransactionsForPeriod, _getUserTransactionsForPe
 const addTransaction = async (req, res) => {
     const { amount, categoryid, currency, description, accountid, income } = req.body;
     const incomeValue = !!income;
+    console.log(req.session);
     const { userid, email } = req.session.user;
     const date = new Date().toISOString();
     const transactionInfo = { amount, categoryid, currency, description, date, accountid, userid, email, income: incomeValue } 
